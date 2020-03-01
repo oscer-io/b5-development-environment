@@ -8,6 +8,7 @@ services:
       COMPOSER_HOME: /app/composer_home
     volumes:
       - ../:/app
+      - ../../laravel-cms:/app/web/packages/laravel-cms
 
   php_xdebug:
     image: docker.team23.de/docker/php:7.4
@@ -18,6 +19,7 @@ services:
       XDEBUG_REMOTE_AUTOSTART: 1
     volumes:
       - ../:/app
+      - ../../laravel-cms:/app/web/packages/laravel-cms
 
   db:
     image: docker.team23.de/docker/mysql:5.7
