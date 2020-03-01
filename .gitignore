@@ -1,0 +1,5 @@
+/build/config.local.yml
+/build/docker-compose.override.yml
+.idea
+/web/packages
+/composer_home

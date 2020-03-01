@@ -1,0 +1,36 @@
+version: "3.7"
+
+services:
+
+  phpmyadmin:
+    networks:
+      - default
+      - traefik_gateway
+    labels:
+      - traefik.enable=true
+      - traefik.domain=test
+      - traefik.docker.network=traefik_gateway
+
+  web:
+    networks:
+      - default
+      - traefik_gateway
+    labels:
+      - traefik.enable=true
+      - traefik.domain=test
+      - traefik.docker.network=traefik_gateway
+
+  mail:
+    networks:
+      - default
+      - traefik_gateway
+    labels:
+      - traefik.enable=true
+      - traefik.domain=test
+      - traefik.port=8025
+      - traefik.docker.network=traefik_gateway
+
+networks:
+  default:
+  traefik_gateway:
+    external: true

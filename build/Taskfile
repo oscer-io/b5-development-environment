@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# b5 Taskfile, see https://git.team23.de/build/b5 for details
+
+task:run() {
+    docker:docker-compose up "$@"
+}
+
+task:halt() {
+    docker:docker-compose down "$@"
+}
+
+task:composer() {
+    docker:command:composer "$@"
+}
+
+task:artisan() {
+    docker:command:artisan "$@"
+}
+
+task:npm() {
+    docker:command:npm "$@"
+}
+
+task:phpunit() {
+    docker:command:phpunit "$@"
+}
+
+task:shell() {
+    container="$1"
+    command="$2"
+    additionalArguments="${@:3}"
+    docker:container_run "${container:-php}" "${command:-/bin/bash}" ${additionalArguments:-}
+}

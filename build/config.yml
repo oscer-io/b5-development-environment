@@ -1,0 +1,24 @@
+project:
+  key: cms
+
+modules:
+  docker:
+    docker_compose_config_overrides:
+      - localhost
+    commands:
+      composer:
+        bin: composer
+        service: php
+        workdir: /app/web/packages/laravel-cms
+      npm:
+        bin: npm
+        service: node
+        workdir: /app/web/packages/laravel-cms
+      artisan:
+        bin: ["php", "./artisan"]
+        service: php
+        workdir: /app/web
+      phpunit:
+        bin: ["php", "./vendor/bin/phpunit"]
+        service: php
+        workdir: /app/web/packages/laravel-cms

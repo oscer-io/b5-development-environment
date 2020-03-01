@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+
+  php:
+    image: docker.team23.de/docker/php:7.4
+    environment:
+      COMPOSER_HOME: /app/composer_home
+    volumes:
+      - ../:/app
+
+  php_xdebug:
+    image: docker.team23.de/docker/php:7.4
+    environment:
+      TEAM23_DOCKER_PHP_ENABLE_XDEBUG: 1
+      PHP_IDE_CONFIG: "serverName=php"
+      XDEBUG_CONFIG: "remote_host=10.254.254.254"
+      XDEBUG_REMOTE_AUTOSTART: 1
+    volumes:
+      - ../:/app
+
+  db:
+    image: docker.team23.de/docker/mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    volumes:
+      - db:/var/lib/mysql/
+
+  redis:
+    image: redis
+
+  node:
+    image: node:lts
+    volumes:
+      - ../:/app
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+    depends_on:
+      - db
+
+  web:
+    image: docker.team23.de/docker/apache:2.4-php
+    environment:
+      APACHE_DOCUMENT_ROOT: /app/web/public
+    volumes:
+      - ../:/app
+    depends_on:
+      - php
+
+  mail:
+    image: mailhog/mailhog
+
+volumes:
+  db:

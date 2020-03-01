@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+
+  phpmyadmin:
+    ports:
+      - "8001:80"
+
+  web:
+    ports:
+      - "8000:80"
+
+  mail:
+    ports:
+      - "8025"
