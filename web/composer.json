@@ -9,7 +9,7 @@
     "license": "MIT",
     "repositories": [{
         "type": "path",
-        "url": "../packages/laravel-cms"
+        "url": "packages/laravel-cms"
     }
     ],
     "require": {
