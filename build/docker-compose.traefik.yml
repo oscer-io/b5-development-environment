@@ -8,7 +8,7 @@ services:
       - traefik_gateway
     labels:
       - traefik.enable=true
-      - traefik.domain=test
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`phpmyadmin.${COMPOSE_PROJECT_NAME}.test`)
       - traefik.docker.network=traefik_gateway
 
   web:
@@ -17,7 +17,7 @@ services:
       - traefik_gateway
     labels:
       - traefik.enable=true
-      - traefik.domain=test
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-web.rule=Host(`web.${COMPOSE_PROJECT_NAME}.test`)
       - traefik.docker.network=traefik_gateway
 
   mail:
@@ -26,8 +26,8 @@ services:
       - traefik_gateway
     labels:
       - traefik.enable=true
-      - traefik.domain=test
-      - traefik.port=8025
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-mail.rule=Host(`mail.${COMPOSE_PROJECT_NAME}.test`)
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}-mail.loadbalancer.server.port=8025
       - traefik.docker.network=traefik_gateway
 
 networks:
