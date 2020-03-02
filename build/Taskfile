@@ -13,6 +13,10 @@ task:composer() {
     docker:command:composer "$@"
 }
 
+task:composer-cms() {
+    docker:command:composer-cms "$@"
+}
+
 task:artisan() {
     docker:command:artisan "$@"
 }
@@ -21,8 +25,16 @@ task:npm() {
     docker:command:npm "$@"
 }
 
+task:npm-cms() {
+    docker:command:npm-cms "$@"
+}
+
 task:phpunit() {
     docker:command:phpunit "$@"
+}
+
+task:phpunit-cms() {
+    docker:command:phpunit-cms "$@"
 }
 
 task:shell() {
@@ -30,4 +42,18 @@ task:shell() {
     command="$2"
     additionalArguments="${@:3}"
     docker:container_run "${container:-php}" "${command:-/bin/bash}" ${additionalArguments:-}
+}
+
+task:link-assets(){
+    DIR="../web/public/vendor/cms"
+    if [[ ! -d "$DIR" ]]; then
+      mkdir -p ${DIR}
+    else
+      rm -rf ${DIR}
+    fi
+    if [[ ! -L "$DIR" ]]; then
+      (
+        cd ../web/public/vendor && ln -s ../../../packages/laravel-cms/dist cms
+      )
+    fi
 }

@@ -9,11 +9,19 @@ modules:
       composer:
         bin: composer
         service: php
-        workdir: /app/web/packages/laravel-cms
+        workdir: /app/web
+      composer-cms:
+        bin: composer
+        service: php
+        workdir: /app/packages/laravel-cms
       npm:
         bin: npm
         service: node
-        workdir: /app/web/packages/laravel-cms
+        workdir: /app/web
+      npm-cms:
+        bin: npm
+        service: node
+        workdir: /app/packages/laravel-cms
       artisan:
         bin: ["php", "./artisan"]
         service: php
@@ -21,4 +29,8 @@ modules:
       phpunit:
         bin: ["php", "./vendor/bin/phpunit"]
         service: php
-        workdir: /app/web/packages/laravel-cms
+        workdir: /app/web
+      phpunit-cms:
+        bin: ["php", "./vendor/bin/phpunit"]
+        service: php
+        workdir: /app/packages/laravel-cms
