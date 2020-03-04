@@ -1,6 +1,17 @@
 project:
   key: cms
 
+paths:
+  web: ../web
+  db: ../_db
+
+app:
+  db:
+    host: db
+    name: cms
+    user: docker
+    pass: docker
+
 modules:
   docker:
     docker_compose_config_overrides:
