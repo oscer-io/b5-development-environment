@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+echo "SET autocommit=0;"
+echo "SET unique_checks=0;"
+echo "SET foreign_key_checks=0;"
+echo ""
+
+cat /dev/stdin
+
+echo ""
+echo ";"
+echo "SET foreign_key_checks=1;"
+echo "SET unique_checks=1;"
+echo "COMMIT;"
