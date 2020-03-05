@@ -78,7 +78,7 @@ task:db:export() {
         -u "${CONFIG_app_db_user}" \
         "-p${CONFIG_app_db_pass}" \
         "${CONFIG_app_db_name}" \
-    | gzip > "${CONFIG_paths_db}/${CONFIG_project_key}_local_$( date "+%Y-%m-%d" ).sql.gz"
+     > "${CONFIG_paths_db}/${CONFIG_project_key}_local_$( date "+%Y-%m-%d" ).sql"
 }
 
 # Import a database from the configured db path
@@ -95,7 +95,7 @@ task:db:import() {
     fi
     case "${DUMPNAME}" in
         live|local|staging)
-            DUMPNAME="${CONFIG_project_key}_${DUMPNAME}_$( date "+%Y-%m-%d" ).sql.gz"
+            DUMPNAME="${CONFIG_project_key}_${DUMPNAME}_$( date "+%Y-%m-%d" ).sql"
             ;;
     esac
 
@@ -106,7 +106,6 @@ task:db:import() {
     fi
 
     cat "${CONFIG_paths_db}/${DUMPNAME}" \
-    | gunzip \
     | docker:container_run \
       --pipe-in \
       --force-exec "${CONFIG_app_db_host}" \
