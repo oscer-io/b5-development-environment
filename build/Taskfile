@@ -6,12 +6,12 @@ prepare:templates() {
 }
 
 task:install() {
-    local laracms="../packages/laravel-cms/"
-    local laracms_git="https://github.com/bambamboole/laravel-cms.git"
+    local laravel_cms_path="../packages/laravel-cms/"
+    local laravel_cms_git_repository="${1:-https://github.com/bambamboole/laravel-cms.git}"
 
-    if [[ ! -d "${laracms}" ]]; then
+    if [[ ! -d "${laravel_cms_path}" ]]; then
         mkdir -p "../packages"
-        (cd "../packages/" && git clone "${laracms_git}")
+        (cd "../packages/" && git clone "${laravel_cms_git_repository}")
     fi
 
     task:composer-cms install
