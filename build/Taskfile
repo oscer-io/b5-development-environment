@@ -1,5 +1,30 @@
 #!/usr/bin/env bash
 # b5 Taskfile, see https://git.team23.de/build/b5 for details
+prepare:templates() {
+    template:render --overwrite ask-if-older templates/config.local.yml.jinja2 config.local.yml
+    template:render --overwrite ask-if-older templates/.env.jinja2 ../web/.env
+}
+
+task:install() {
+    local laracms="../packages/laravel-cms/"
+    local laracms_git="https://github.com/bambamboole/laravel-cms.git"
+
+    if [[ ! -d "${laracms}" ]]; then
+        mkdir -p "../packages"
+        (cd "../packages/" && git clone "${laracms_git}")
+    fi
+
+    task:composer-cms install
+    task:composer install
+    task:npm-cms install
+    task:npm-cms run dev
+    task:npm install
+    task:npm run dev
+    task:link-assets
+    prepare:templates
+    task:artisan cms:migrate
+    task:phpunit-cms
+}
 
 task:run() {
     docker:docker-compose up "$@"
