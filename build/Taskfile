@@ -107,7 +107,6 @@ task:db:import() {
 
     cat "${CONFIG_paths_db}/${DUMPNAME}" \
     | gunzip \
-    | ./mysql-quick-load \
     | docker:container_run \
       --pipe-in \
       --force-exec "${CONFIG_app_db_host}" \
