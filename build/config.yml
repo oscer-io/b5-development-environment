@@ -2,7 +2,6 @@ project:
   key: cms
 
 paths:
-  web: ../web
   db: ../_db
 
 app:
