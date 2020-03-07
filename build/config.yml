@@ -1,6 +1,16 @@
 project:
   key: cms
 
+paths:
+  db: ../_db
+
+app:
+  db:
+    host: db
+    name: cms
+    user: docker
+    pass: docker
+
 modules:
   template:
   docker:
