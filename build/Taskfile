@@ -1,6 +1,27 @@
 #!/usr/bin/env bash
 # b5 Taskfile, see https://git.team23.de/build/b5 for details
 
+task:install() {
+    local laravel_cms_path="../packages/laravel-cms/"
+    local laravel_cms_git_repository="${1:-https://github.com/bambamboole/laravel-cms.git}"
+
+    if [[ ! -d "${laravel_cms_path}" ]]; then
+        mkdir -p "../packages"
+        (cd "../packages/" && git clone "${laravel_cms_git_repository}")
+    fi
+
+    task:composer-cms install
+    task:composer install
+    task:npm-cms install
+    task:npm-cms run dev
+    task:npm install
+    task:npm run dev
+    task:link-assets
+    template:render --overwrite ask-if-older templates/config.local.yml.jinja2 config.local.yml
+    task:artisan cms:migrate
+    task:phpunit-cms
+}
+
 task:run() {
     docker:docker-compose up "$@"
 }
@@ -56,4 +77,62 @@ task:link-assets(){
         cd ../web/public/vendor && ln -s ../../../packages/laravel-cms/dist cms
       )
     fi
+}
+
+##########################################################
+# Database tasks                                         #
+##########################################################
+
+# Export the current local database to the configured db path
+task:db:export() {
+    mkdir -p "${CONFIG_paths_db}"
+
+    docker:container_run \
+      --pipe-out \
+      --force-exec "${CONFIG_app_db_host}" \
+      mysqldump \
+        --default-character-set=utf8 \
+        --set-charset \
+        --single-transaction \
+        --disable-keys \
+        -h "${CONFIG_app_db_host}" --protocol=TCP \
+        -u "${CONFIG_app_db_user}" \
+        "-p${CONFIG_app_db_pass}" \
+        "${CONFIG_app_db_name}" \
+     > "${CONFIG_paths_db}/${CONFIG_project_key}_local_$( date "+%Y-%m-%d" ).sql"
+}
+
+# Import a database from the configured db path
+#
+# param1:
+#   - name of the dumpfile to import or
+#   - one of the following TYPEs, in order to import the database of the format 'name_{TYPE}_yyyy-mm-dd.sql.gz':
+#     local | live | staging
+task:db:import() {
+    local DUMPNAME=${1:-}
+
+    if [ -z "$DUMPNAME" ]; then
+        DUMPNAME="live"
+    fi
+    case "${DUMPNAME}" in
+        live|local|staging)
+            DUMPNAME="${CONFIG_project_key}_${DUMPNAME}_$( date "+%Y-%m-%d" ).sql"
+            ;;
+    esac
+
+    if [ ! -e "${CONFIG_paths_db}/${DUMPNAME}" ]; then
+        echo "Dump does not exist:"
+        echo "(${CONFIG_paths_db}/${DUMPNAME})"
+        exit 1
+    fi
+
+    cat "${CONFIG_paths_db}/${DUMPNAME}" \
+    | docker:container_run \
+      --pipe-in \
+      --force-exec "${CONFIG_app_db_host}" \
+      mysql \
+        -h "${CONFIG_app_db_host}" --protocol=TCP \
+        -u "${CONFIG_app_db_user}" \
+        "-p${CONFIG_app_db_pass}" \
+        -D "${CONFIG_app_db_name}"
 }
