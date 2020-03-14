@@ -9,7 +9,7 @@ class CmsServiceProvider extends ServiceProvider
 {
     public function boot(CmsRouter $router)
     {
-        $router->registerPageRoutes();
-        $router->registerBlogRoutes();
+        $router->registerPagesRoutes();
+        $router->registerPostsRoutes();
     }
 }
