@@ -20,6 +20,17 @@ services:
       - traefik.http.routers.${COMPOSE_PROJECT_NAME}-web.rule=Host(`web.${COMPOSE_PROJECT_NAME}.test`)
       - traefik.docker.network=traefik_gateway
 
+  node:
+    networks:
+      - default
+      - traefik_gateway
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME}-node.rule=Host(`docs.${COMPOSE_PROJECT_NAME}.test`)
+      - traefik.http.services.${COMPOSE_PROJECT_NAME}-node.loadbalancer.server.port=8080
+      - traefik.docker.network=traefik_gateway
+
+
   mail:
     networks:
       - default
