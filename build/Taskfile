@@ -18,7 +18,7 @@ task:install() {
     task:npm run dev
     task:link-assets
     template:render --overwrite ask-if-older templates/config.local.yml.jinja2 config.local.yml
-    task:artisan migrate
+    task:artisan migrate:fresh
     task:artisan cms:dev:seed
     task:phpunit-cms
 }
