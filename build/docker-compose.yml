@@ -9,10 +9,15 @@ services:
     volumes:
       - ../:/app
 
-  php_xdebug:
+  php-xdebug:
     image: docker.team23.de/docker/php:7.4
     environment:
       TEAM23_DOCKER_PHP_ENABLE_XDEBUG: 1
+      XDEBUG_REMOTE_ENABLE: 0
+      XDEBUG_REMOTE_CONNECT_BACK: 1
+      XDEBUG_REMOTE_PORT: 9000
+      XDEBUG_REMOTE_HOST: 10.254.254.254
+      XDEBUG_MAX_NESTING_LEVEL: 400
       PHP_IDE_CONFIG: "serverName=php"
       XDEBUG_CONFIG: "remote_host=10.254.254.254"
       XDEBUG_REMOTE_AUTOSTART: 1
@@ -52,6 +57,7 @@ services:
       APACHE_DOCUMENT_ROOT: /app/web/public
     volumes:
       - ../:/app
+      - ./docker/web/httpd-extra-php.conf:/usr/local/apache2/conf/httpd-extra-php.conf
     depends_on:
       - php
 
