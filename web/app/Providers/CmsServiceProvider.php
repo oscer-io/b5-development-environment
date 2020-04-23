@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Bambamboole\LaravelCms\Frontend\Routing\FrontendRouter;
+use Oscer\Cms\Frontend\Routing\FrontendRouter;
 use Illuminate\Support\ServiceProvider;
 
 class CmsServiceProvider extends ServiceProvider

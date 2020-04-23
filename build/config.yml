@@ -1,5 +1,5 @@
 project:
-  key: cms
+  key: oscer
 
 paths:
   db: ../_db
@@ -24,7 +24,7 @@ modules:
       composer-cms:
         bin: composer
         service: php
-        workdir: /app/packages/laravel-cms
+        workdir: /app/packages/oscer
       npm:
         bin: npm
         service: node
@@ -32,7 +32,7 @@ modules:
       npm-cms:
         bin: npm
         service: node
-        workdir: /app/packages/laravel-cms
+        workdir: /app/packages/oscer
       artisan:
         bin: ["php", "./artisan"]
         service: php
@@ -44,4 +44,4 @@ modules:
       phpunit-cms:
         bin: ["php", "./vendor/bin/phpunit"]
         service: php
-        workdir: /app/packages/laravel-cms
+        workdir: /app/packages/oscer

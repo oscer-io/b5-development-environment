@@ -8,6 +8,8 @@ services:
       COMPOSER_HOME: /app/composer_home
     volumes:
       - ../:/app
+    depends_on:
+      - db
 
   php-xdebug:
     image: docker.team23.de/docker/php:7.4
