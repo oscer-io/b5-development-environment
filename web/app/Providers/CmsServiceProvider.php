@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Oscer\Cms\Backend\ScriptHandler;
+use Oscer\Cms\Backend\View\ScriptHandler;
 use Oscer\Cms\Backend\Sidebar\Sidebar;
 use Oscer\Cms\Backend\Sidebar\SidebarItem;
 use Oscer\Cms\Frontend\Routing\FrontendRouter;
