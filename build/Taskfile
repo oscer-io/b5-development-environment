@@ -25,6 +25,21 @@ task:install() {
     task:artisan cms:dev:seed
 }
 
+task:install-lite() {
+    setup-env
+    local oscer_path="../packages/oscer/"
+    local oscer_git_repository="${1:-https://github.com/oscer-io/oscer.git}"
+
+    if [[ ! -d "${oscer_path}" ]]; then
+        mkdir -p "../packages"
+        (cd "../packages/" && git clone "${oscer_git_repository}")
+    fi
+
+    task:link-assets
+}
+
+
+
 ##################################################
 # Helper Tasks to copy .env if needed or run cli #
 # tools in the docker container. These cli       #
